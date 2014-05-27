@@ -5,7 +5,10 @@
 :local outfile ($sysname . "-" . ([:pick [/system clock get date] 4 6] . "-" . [:pick [/system clock get date] 0 3] . "-" . [:pick [/system clock get date] 7 11]))
 
 :if ([:typeof $lastbackup] != "nothing" && $lastbackup != ($outfile . ".rsc")) do={
-	/file remove $lastbackup
+  :if ([:len [/file find name=$lastbackup]] > 0) do={ 
+    :log warning "Removing $lastbackup"
+    /file remove $lastbackup
+  }
 }
 
 /export file=$outfile compact
